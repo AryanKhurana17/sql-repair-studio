@@ -4,4 +4,7 @@ __pycache__/
 *.pyc
 .DS_Store
 Data Engineering Assignment.pdf
+errors_and_fixes.md
+walkthrough.md
+video_guide.md
 test.csv
