@@ -318,7 +318,7 @@ for issue in issues:
     if not issue.sql_fix:
         continue
     sql_clean = issue.sql_fix.strip()
-    if sql_clean.upper().startswith("SELECT"):
+    if sql_clean:
         cte_parts.append((issue.category, sql_clean))
 
 if cte_parts:
