@@ -1,0 +1,70 @@
+# Customer master schema (reference)
+#
+# This file defines the expected shape and content of customer records.
+# A raw dataset that diverges from this spec is in violation and should
+# be reported by the profiling tool.
+
+table: customers
+primary_key: customer_id
+
+columns:
+
+  - name: customer_id
+    type: string
+    nullable: false
+    unique: true
+    format: "^C\\d{6}$"
+    description: "Internal customer identifier."
+
+  - name: email
+    type: string
+    nullable: false
+    unique: true
+    format: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    description: "Customer email. Lowercase, no leading/trailing whitespace."
+
+  - name: full_name
+    type: string
+    nullable: false
+    description: "Full name as 'First Last'. No surrounding whitespace."
+
+  - name: phone
+    type: string
+    nullable: false
+    format: "^\\+\\d{1,3}-\\d{7,12}$"
+    description: "Phone in international format with country code prefix and a single hyphen separator."
+
+  - name: signup_date
+    type: date
+    nullable: false
+    format: "YYYY-MM-DD"
+    min: "2020-01-01"
+    description: "Customer signup date. ISO 8601 date only."
+
+  - name: country
+    type: string
+    nullable: false
+    domain: ["IN", "US", "UK", "AE", "SG"]
+    description: "ISO 3166-1 alpha-2 country code."
+
+  - name: city
+    type: string
+    nullable: false
+    description: "City name in title case."
+
+  - name: segment
+    type: string
+    nullable: false
+    domain: ["retail", "premium", "enterprise"]
+    description: "Customer segment, lowercase."
+
+  - name: is_active
+    type: boolean
+    nullable: false
+    domain: ["true", "false"]
+    description: "Active flag. Lowercase string."
+
+expectations:
+  row_count_min: 100
+  duplicate_key_rate_max: 0.0
+  null_rate_max_per_column: 0.0
