@@ -224,6 +224,24 @@ st.subheader("Issues Report")
 if not issues:
     st.success("No data quality issues found.")
 else:
+    # ── Export Report Button ──
+    report_lines = ["# Data Quality Issues Report\n"]
+    for i, issue in enumerate(issues, 1):
+        report_lines.append(f"## {i}. {issue.category.replace('_', ' ').title()}")
+        report_lines.append(f"- **Level:** {issue.level}")
+        report_lines.append(f"- **Severity:** {issue.severity}")
+        report_lines.append(f"- **Column:** {issue.column}")
+        report_lines.append(f"- **Affected Rows:** {issue.affected_rows}")
+        report_lines.append(f"- **Description:** {issue.description}")
+        report_lines.append("\n**SQL Fix:**\n```sql\n" + issue.sql_fix.strip() + "\n```\n")
+    
+    st.download_button(
+        label="📥 Download Issues Report (.md)",
+        data="\n".join(report_lines),
+        file_name="generated_issues_report.md",
+        mime="text/markdown",
+    )
+    st.write("") # spacer
     tab_all, tab_schema, tab_content = st.tabs([
         f"All Issues ({len(issues)})",
         f"Schema-Level ({stats['schema_issues']})",
